@@ -37,9 +37,9 @@ February 19th, 2020
 # Model Comparison
 The repository contains scripts to test and evaluate two models:
 
-## YOLOv8 Segmentation (yolo.py)
+- YOLOv8 Segmentation (yolo.py)
 
-## EfficientDet (efficientdet.py)
+- EfficientDet (efficientdet.py)
 
 # Documentation and Usage
 
@@ -86,24 +86,24 @@ Each file in this repository is carefully documented and contains detailed comme
     └── video_generator_from_frames.py # Combines inference frames into a video
 ```
 
-## Inference Workflow
+# Inference Workflow
 
-# Initial Setup - Check Configurations:
+### Initial Setup - Check Configurations:
 Before starting the process, ensure that filenames and folder paths are compatible with your environment by checking and editing `utils/config.py`. The configuration file allows you to define the video names, folder paths, and other necessary settings.
 
-# Video Preparation - Merge or Use Single Video:
+### Video Preparation - Merge or Use Single Video:
 If you plan to combine multiple videos into one for testing, use the script `utils/video_merger.py`. This script merges videos listed in `config.py` and saves the combined video in the designated folder.
 Skip this step if you intend to use a single video directly without merging, in this case, simply set up the `config.py` file to aim your video correctly.
 
-# Frame Extraction:
+### Frame Extraction:
 After you have the desired video (merged or single), execute the script `utils/video_frame_extractor.py`. This script will take the video specified in `config.py`, extract its frames, and save them inside the `data/frames/` folder for model processing.
 
-# Model Inference:
+### Model Inference:
 With the extracted frames in `data/frames/`, you can proceed with model inference by running the respective root scripts: `yolo.py` for YOLOv8 or `efficientdet.py` for EfficientDet.
 These scripts load the corresponding model and process the extracted frames. The inference results, are saved as frames in the folder output/frames/[model_name]/.
 In addition to the frames, detailed logs of the inference process (e.g., frame processing time, GPU/CPU usage) are saved as JSON files in `output/logs/`.
 
-# Video Generation (Optional):
+### Video Generation (Optional):
 If you wish to compile the processed frames into a video, you can use the `utils/video_generator_from_frames.py` script.
 For each model, go into the 'video_generator_from_frames.py' script and specify the model name for which you want to generate a video. This will compile the frames in output/frames/[model_name] into a video and save it as output/videos/[model_name].mp4.
 

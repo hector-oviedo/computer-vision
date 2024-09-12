@@ -41,9 +41,9 @@ The repository contains scripts to test and evaluate two models:
 
 - EfficientDet (efficientdet.py)
 
-- Detectron2 (`detectron2.py`) (only on Linux environments).
+- Detectron2 (detectron2.py) (only on Linux environments).
 
-= SAM2 (still working on it).
+- SAM2 (still working on it).
 
 # Documentation and Usage
 

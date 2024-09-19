@@ -1,3 +1,5 @@
+# yolo.py
+
 import os
 import sys
 import cv2
@@ -18,17 +20,8 @@ from logger import Logger
 
 class YOLOv8Processor:
     def __init__(self, frames_input_folder, frames_output_folder, output_json):
-        """Initialize the YOLOv8Processor class.
-
-        Args:
-            frames_input_folder (str): Directory where the input frames are stored.
-            frames_output_folder (str): Directory where the output frames will be saved.
-            output_json (str): File path for saving the log data in JSON format.
-        """
-
-        # Name of the model where we will save the frames, and name of the output file
+        """Initialize the YOLOv8Processor class."""
         self.model_name = "yolov8xseg"
-
         self.frames_input_folder = frames_input_folder
         self.frames_output_folder = frames_output_folder
         self.logger = Logger(output_json)
@@ -37,103 +30,93 @@ class YOLOv8Processor:
         self.class_color_mapping = {}
 
     def process_frames(self):
-        """Process the input frames, perform inference, and save results.
-
-        This method reads frames from the input folder, processes them using YOLOv8,
-        logs the inference time per frame, and saves the annotated frames in the output folder.
-        """
-        # Get all frame files from the input folder and sort them
+        """Process the input frames, perform inference, and save results."""
         frame_files = sorted([f for f in os.listdir(self.frames_input_folder) if f.endswith('.png')])
         total_frames = len(frame_files)
 
-        # If no frames are found, exit
         if total_frames == 0:
             print("Error: No frames found in the specified folder.")
             return
 
-        # Determine the number of frames to process based on the video_percentage setting
         max_frames_to_process = int(total_frames * GlobalConfig.video_percentage)
-
-        # Initialize frame counter and start the total time tracking
-        total_inference_time = 0  # Track cumulative inference time
         frame_id = 0
 
-        # Ensure the model-specific subfolder exists within the frames output folder
         model_frames_output_dir = os.path.join(self.frames_output_folder, self.model_name)
 
-        # Clear the folder if it contains any files
         if os.path.exists(model_frames_output_dir):
-            if os.listdir(model_frames_output_dir):  # Check if the folder is not empty
-                # Clear the folder
+            if os.listdir(model_frames_output_dir):
                 shutil.rmtree(model_frames_output_dir)
                 print("Warning: Output folder had files which were cleaned.")
         os.makedirs(model_frames_output_dir, exist_ok=True)
 
-        # Process each frame within the specified percentage
+        # Record script start time
+        script_start_time = time.perf_counter()
+
         for frame_file in frame_files[:max_frames_to_process]:
             frame_path = os.path.join(self.frames_input_folder, frame_file)
             frame = cv2.imread(frame_path)
 
-            # Ensure the frame is readable, if not, skip it
             if frame is None:
-                print(f"Error: Could not read frame {frame_file}.")
+                print(f"Error: Could not read frame {frame_file}. Skipping.")
                 continue
 
-            # Log progress as `frame_id / total_frames_to_process`
             print(f"Processing frame {frame_id + 1}/{max_frames_to_process}...")
 
-            # Measure inference time for each frame
-            start_time = time.time()
+            # Record frame start time
+            frame_start_time = time.perf_counter()
+
+            # Resize frame outside the timing
             resized_frame = cv2.resize(frame, (GlobalConfig.resize_size, GlobalConfig.resize_size))
-            results_frame = self.model(resized_frame, device=self.device)
-            inference_time = time.time() - start_time
 
-            # Accumulate inference time for overall calculation
-            total_inference_time += inference_time
+            # Perform inference and capture the results
+            # The 'verbose=False' suppresses console logs
+            results = self.model(resized_frame, device=self.device, verbose=False)
 
-            # Annotate the frame based on YOLO inference results
-            annotated_frame, frame_data = self.annotate_frame(frame, results_frame)
+            # Extract inference time from the results
+            # Assuming YOLOv8's Results object has a 'speed' dictionary with 'inference' time in milliseconds
+            inference_time_ms = results[0].speed.get('inference', 0.0)  # Already in ms
 
-            # Save the annotated frame in the model-specific subfolder
+            # Annotate the frame
+            annotated_frame, frame_data = self.annotate_frame(frame, results)
+
+            # Save the annotated frame
             frame_filename = os.path.join(model_frames_output_dir, f'frame_{frame_id:04d}.png')
             cv2.imwrite(frame_filename, annotated_frame)
 
-            # Log the results for each frame, including inference time
-            self.logger.log_frame(frame_id, self.model_name, frame_data['results'], inference_time)
+            # Record frame end time
+            frame_end_time = time.perf_counter()
 
-            # Update the frame counter
+            # Compute total time for frame processing in ms
+            frame_total_time_ms = (frame_end_time - frame_start_time) * 1000  # ms
+
+            # Log the results
+            self.logger.log_frame(frame_id, self.model_name, frame_data['results'], inference_time_ms, frame_total_time_ms)
+
             frame_id += 1
 
-            # Clear cache and free up memory after each frame
-            del resized_frame, results_frame
+            # Clear cache and free memory
+            del resized_frame, results, annotated_frame, frame_data
             torch.cuda.empty_cache()
             gc.collect()
 
-        # After processing all frames, log the total inference time and other data
-        self.logger.log_data["total_inference_time"] = round(total_inference_time, 3)
-        self.logger.log_data["total_frames"] = frame_id
-        if self.device == 'cuda':
-            self.logger.log_data["total_gpu_memory_used"] = round(torch.cuda.max_memory_allocated() / 1e6, 2)  # MB
-            self.logger.log_data["total_gpu_memory_cached"] = round(torch.cuda.max_memory_reserved() / 1e6, 2)  # MB
+        # Record script end time
+        script_end_time = time.perf_counter()
 
-        # Save the final log data
+        # Compute total script time in ms
+        total_script_time_ms = (script_end_time - script_start_time) * 1000  # ms
+
+        # Set total_time in logger
+        self.logger.set_total_time(total_script_time_ms)
+
+        # Log summary data
         self.logger.save_log()
         print("Processing complete. Frames and log saved.")
 
     def annotate_frame(self, frame, results_frame):
-        """Annotates the input frame with YOLO detection and segmentation results.
-
-        Args:
-            frame (ndarray): The original input frame.
-            results_frame (Results): The inference results from YOLOv8.
-
-        Returns:
-            tuple: The annotated frame and the data to be logged.
-        """
+        """Annotates the input frame with YOLO detection and segmentation results."""
         frame_data = {'results': []}
-        overlay = frame.copy()  # Copy the original frame for overlaying the annotations
+        overlay = frame.copy()
 
-        # Loop through all detection results in the frame
         for result in results_frame:
             boxes = result.boxes
             masks = result.masks
@@ -146,57 +129,51 @@ class YOLOv8Processor:
                     box = box.tolist()
                     mask = mask.cpu().numpy().astype(np.uint8)
 
-                    # Assign color for class segmentation and bounding boxes
                     if int(class_id) not in self.class_color_mapping:
                         self.class_color_mapping[int(class_id)] = {
                             'box_color': GlobalConfig.object_colors[len(self.class_color_mapping) % len(GlobalConfig.object_colors)],
                             'segmentation_color': GlobalConfig.segmentation_colors[len(self.class_color_mapping) % len(GlobalConfig.segmentation_colors)]
                         }
-                    
+
                     box_color = self.class_color_mapping[int(class_id)]['box_color']
                     segmentation_color = self.class_color_mapping[int(class_id)]['segmentation_color']
 
-                    # Resize mask and apply segmentation and bounding boxes
                     mask_resized = cv2.resize(mask, (frame.shape[1], frame.shape[0]))
                     color_mask = np.zeros_like(frame, dtype=np.uint8)
                     color_mask[mask_resized > 0] = segmentation_color
                     alpha_mask = np.zeros((frame.shape[0], frame.shape[1]), dtype=np.uint8)
                     alpha_mask[mask_resized > 0] = int(255 * GlobalConfig.instance_segmentation_transparency)
 
-                    # Overlay the segmentation and bounding box on the frame
                     color_mask = cv2.cvtColor(color_mask, cv2.COLOR_RGB2RGBA)
                     color_mask[:, :, 3] = alpha_mask
                     frame_rgba = cv2.cvtColor(frame, cv2.COLOR_RGB2RGBA)
                     overlay = cv2.addWeighted(frame_rgba, 1, color_mask, 0.5, 0)
                     frame = cv2.cvtColor(overlay, cv2.COLOR_RGBA2RGB)
 
-                    # Draw the bounding box and label
                     cv2.rectangle(frame, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), box_color, GlobalConfig.box_border_width)
                     label_text = f"{label} {score:.2f}"
                     (text_width, text_height), baseline = cv2.getTextSize(label_text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
-                    cv2.rectangle(frame, (int(box[0]), int(box[1]) - text_height - baseline), (int(box[0]) + text_width, int(box[1])), GlobalConfig.label_box_background, -1)
-                    cv2.putText(frame, label_text, (int(box[0]), int(box[1]) - baseline), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GlobalConfig.label_text_color, 1, lineType=cv2.LINE_AA)
+                    cv2.rectangle(frame, (int(box[0]), int(box[1]) - text_height - baseline), 
+                                  (int(box[0]) + text_width, int(box[1])), 
+                                  GlobalConfig.label_box_background, -1)
+                    cv2.putText(frame, label_text, (int(box[0]), int(box[1]) - baseline), 
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, GlobalConfig.label_text_color, 1, lineType=cv2.LINE_AA)
 
-                    # Store the result data for logging
                     frame_data['results'].append({
                         'label': label,
-                        'box': box,
+                        'box': [int(coord) for coord in box],
                         'score': float(score)
                     })
 
         return frame, frame_data
 
-
 if __name__ == "__main__":
-    # Instantiate the processor class
-    processor = YOLOv8Processor(GlobalConfig.frames_input_folder, GlobalConfig.frames_output_folder, "")
-
     # Use configuration to specify input and output folders
     frames_input_folder = GlobalConfig.frames_input_folder
     frames_output_folder = GlobalConfig.frames_output_folder
 
-    # Use processor.model_name directly since `self` isn't available in the main scope
-    output_json =  f'{processor.model_name}_results'
+    # Initialize processor with output_json as model_name
+    output_json = "yolov8xseg"
 
     processor = YOLOv8Processor(frames_input_folder, frames_output_folder, output_json)
     processor.process_frames()

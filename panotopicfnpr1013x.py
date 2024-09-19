@@ -88,6 +88,20 @@ class Detectron2Processor:
             frame_end_time = time.perf_counter()
             inference_time_ms = (frame_end_time - frame_start_time) * 1000
 
+            # Extract detections (label, box, score) from outputs
+            detections = []
+            instances = outputs["instances"].to("cpu")
+            boxes = instances.pred_boxes.tensor.numpy()
+            scores = instances.scores.numpy()
+            classes = instances.pred_classes.numpy()
+
+            for box, score, cls in zip(boxes, scores, classes):
+                detections.append({
+                    'label': self.metadata.thing_classes[cls],
+                    'box': box.tolist(),
+                    'score': round(float(score), 2)
+                })
+
             # Use Detectron2's Visualizer to annotate the frame
             v = Visualizer(frame[:, :, ::-1], self.metadata, instance_mode=ColorMode.IMAGE)
             out = v.draw_instance_predictions(outputs["instances"].to("cpu"))
@@ -101,7 +115,7 @@ class Detectron2Processor:
             self.logger.log_frame(
                 frame_number=frame_id,
                 model_name=self.model_name,
-                detections=[],  # Skipping individual detections in the log for simplicity
+                detections=detections,  # Log the extracted detections
                 inference_time_ms=inference_time_ms,
                 total_time_ms=frame_total_time_ms
             )

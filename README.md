@@ -1,71 +1,231 @@
-# Computer Vision Module for IU University - Research Project
+# Computer Vision Module for Object Detection and Segmentation
 
-This repository contains a research tool and setup for a computer vision module developed as part of a project for IU University. The primary objective of this repository is to test, implement, and experiment with state-of-the-art object detection and segmentation models, specifically focusing on video inputs. The project primarily utilizes the YOLOv8 segmentation model (yolov8x-seg) due to its latest features supporting both object detection and segmentation tasks.
+## Introduction
+This repository contains the tools for a research project focused on object detection and segmentation from video sequences. The primary goal is to test, implement, and compare multiple state-of-the-art (SoA) computer vision models for object recognition, specifically evaluating their performance in video-based tasks. This module is part of a broader project aimed at understanding and evaluating SoA models for video object recognition and segmentation in various scenarios.
 
-## Project Overview
-### Objective
-The main goal of this repository is to compare different computer vision models by applying them to video data and evaluating their performance in terms of object detection and segmentation. YOLOv8 was chosen for its simplicity and effectiveness, while EfficientDet was considered but ultimately discarded due to its complexity and challenges in implementing segmentation without a manual backbone model.
+The models used in this project include YOLOv8, EfficientDet, Detectron2, and SAM2, all of which are integrated into the provided pipeline to facilitate benchmarking and performance comparisons across different input videos.
 
-# Videos Used
-The project uses a set of four diverse videos to test the models:
+## Task Overview
+This project addresses a university task focused on developing a system for recognizing and segmenting objects in video sequences. The task requires the evaluation of three state-of-the-art computer vision models using a representative dataset, focusing on object detection and segmentation. The system should return the video with identified objects, their position, shape, and labels. Additionally, the task calls for an evaluation of the models based on validity, reliability, and objectivity, alongside a qualitative analysis.
 
-Street Video (6059506-hd_1920_1080_30fps.mp4): A clear video of people and cars on a street.
-Top View Street Video (3696015-hd_1920_1080_24fps.mp4): A challenging top-view of street traffic, testing the model's inference on uncommon perspectives.
-Snow Forest Video (1508533-hd_1920_1080_25fps.mp4): Features deers in a snowy environment, posing challenges with obstruction and uncommon object labels.
-Interior House Video (3769966-hd_1920_1080_25fps.mp4): An indoor scene with a person walking around a room.
-These videos are combined into a single video using the combine_videos.py script, located in the utils folder, to streamline the testing process.
+**Key Objectives:**
+- Develop a system for object detection and segmentation in videos.
+- Evaluate three state-of-the-art models on a representative dataset.
+- Analyze model performance in terms of validity, reliability, and objectivity.
+- Provide a video demonstrating the best performing model with labeled objects.
 
-# Videos from:
+## Installation
 
-George Morina
-https://www.pexels.com/video/crowded-street-under-the-rain-6059506/
-December 3rd, 2020
+### Environment Setup
 
-Anthony
-https://pexels.com/video/a-group-of-deer-at-winter-1508533/
-October 14th, 2018
+This project requires setting up two separate environments due to version compatibility constraints. YOLOv8, EfficientDet, and Detectron2 require a Python 3.8 environment, while SAM2 requires Python 3.10 or higher. Below are the steps to set up both environments.
 
-Kelly
-https://www.pexels.com/video/top-view-footage-of-the-vehicles-crossing-the-roads-3696015/
-February 7th, 2020
+#### Setting up YOLO, EfficientDet, and Detectron2 (Python 3.8):
 
-Taryn Elliott
-https://www.pexels.com/video/woman-in-green-romper-pouring-water-on-the-plant-3769966/
-February 19th, 2020
+1. Create a Python 3.8 environment using Conda or Miniconda:
+    ```bash
+    conda create --name cv_project python=3.8
+    conda activate cv_project
+    ```
+
+2. Install the required libraries:
+    ```bash
+    pip install opencv-python
+    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+    ```
+	For more details: [Pytorch Documentation](https://pytorch.org/get-started/locally/)
+
+3. Install the specific model libraries:
+    - YOLOv8:
+      ```bash
+      pip install ultralytics
+      ```
+      For more details: [YOLO Documentation](https://docs.ultralytics.com/models/)
+      
+    - EfficientDet:
+      ```bash
+      pip install effdet
+      ```
+      For more details: [EfficientDet Repository](https://github.com/google/automl/tree/master/efficientdet)
+
+    - Detectron2 (Linux recommended, Windows with WSL supported but not optimal):
+      ```bash
+      pip install 'git+https://github.com/facebookresearch/detectron2.git'
+      ```
+      For more details: [Detectron2 Installation Guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html)
+
+#### Setting up SAM2 (Python 3.10 or higher):
+
+1. Create a Python 3.10 environment using Conda or Miniconda:
+    ```bash
+    conda create --name cv_project_sam python=3.10
+    conda activate cv_project_sam
+    ```
+
+2. Install the required libraries:
+    ```bash
+    pip install opencv-python
+    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+    ```
+
+3. Clone the SAM2 repository and install it:
+    ```bash
+    git clone https://github.com/facebookresearch/segment-anything-2.git
+    cd segment-anything-2
+    pip install -e ".[demo]"
+    ```
+
+4. Go back to the project folder:
+    ```bash
+    cd ..
+    ```
+
+### Operating System Notes
+
+- **Linux**: Highly recommended for better performance and full compatibility with all models.
+- **Windows**: YOLO and EfficientDet can run natively, but Detectron2 and SAM2 are only supported via Windows Subsystem for Linux (WSL), which may reduce performance during inference.
+
+## Project Workflow
+
+This project involves several stages to process videos, run object detection and segmentation models, for later analyze the output. Below are the key steps for working with the provided tools.
+
+### 1. Video Preparation
+To begin, prepare the videos you wish to analyze by merging them into a single video using the `video_merger.py` script. This script allows you to combine multiple video files and crop or resize them for model compatibility. Later in this README you will find the videos used in my specific case study.
 
 
-# Model Comparison
-The repository contains scripts to test and evaluate two models:
+**Steps:**
+1. Place your videos in the `data/videos/` folder (or the folder specified in `config.py`).
+2. Edit the `video_files` variable in `video_merger.py` to include the filenames of your videos.
+3. Run the script to combine the videos:
+    ```bash
+    python utils/video_merger.py
+    ```
 
-- YOLOv8 Segmentation (yolo.py)
+This will generate a combined video file based on the configuration settings.
 
-- EfficientDet (efficientdet.py)
+### 2. Frame Extraction
+After preparing the video, you can automatically extract individual frames using the `video_frame_extractor.py` script. This will convert the video into frames for model inference.
 
-# Documentation and Usage
+**Steps:**
+1. Ensure your video path is correctly set in the `config.py` file (under `video_input_folder` and `combined_video_name`).
+2. Run the following command:
+    ```bash
+    python utils/video_frame_extractor.py
+    ```
 
-### Overview
+The frames will be saved in the folder specified in the `config.py` file (`data/frames/` by default).
 
-The utils folder contains essential scripts that facilitate the configuration of the project, handling of video data, frame extraction, and video generation processes for the models. These scripts will help with the workflow, making it easier to manage the input and output of data during model inference, and help us to compare easily the models.
+### 3. Model Inference
+Once the frames are extracted, run the object detection and segmentation models on the frames using the following scripts for each model:
 
-The key scripts in the utils folder include:
-- config.py – Central configuration file that stores parameters for the project, such as folder paths, color schemes, model settings, and more.
-- video_merger.py – Combines multiple videos into a single file.
-- video_frame_extractor.py – Extracts frames from a video and saves them into a folder for model inference.
-- video_generator_from_frames.py – Combines processed frames back into a video after inference.
+- **YOLOv8**:
+    ```bash
+    python yolo.py
+    ```
+- **EfficientDet**:
+    ```bash
+    python efficientdet.py
+    ```
+- **Detectron2**:
+    ```bash
+    python detectron2_script.py
+    ```
+- **SAM2**:
+    ```bash
+    python sam2_script.py
+    ```
 
-### Code Documentation and Comments
+Each script will process the frames, perform inference, and save the results in the output folders. Detailed logs and performance metrics (e.g., inference time, GPU usage) will be saved as JSON files in the `output/logs/` directory.
+**Important: Do not forget activate the correct environment for each script**
 
-Each file in this repository is carefully documented and contains detailed comments to provide clear guidance on how the code works. The scripts are designed to be intuitive, with in-line explanations of key processes and decisions. This ensures that users can understand the purpose and functionality of each part of the code without needing to reference external documentation. To avoid redundancy, the individual code blocks will not be discussed in detail in this README. Instead, users are encouraged to explore the comments within the scripts themselves for deeper insights into how they work.
+### 4. Video Generation
+After model inference, you can generate a video from the processed frames using the `video_generator_from_frames.py` script. This step allows you to visualize the results in video form.
 
-### Folder Structure
+**Steps:**
+1. Edit the `model_name` variable in `video_generator_from_frames.py` to match the model whose output you want to compile.
+2. Run the script to generate the video:
+    ```bash
+    python utils/video_generator_from_frames.py
+    ```
+
+The generated video will be saved in the folder specified in the `config.py` file (`data/videos/` by default).
+
+## Models JSON Output Structure
+
+The results of the model inference, including processed frames, logs, and videos, are stored in specific folders within the project. Below is an overview of how the output is organized:
+
+- **Processed Frames**:
+  - The processed frames after model inference are saved in the `output/frames/[model_name]/` folder.
+  - Each frame corresponds to an input frame from the video, overlaid with the bounding boxes and segmentation masks produced by the model.
+
+- **Logs**:
+  - Logs are generated as JSON files and saved in the `output/logs/` folder.
+  - Each log file includes frame-by-frame performance metrics such as:
+    - Inference time (ms)
+    - CPU/GPU usage
+    - Detected objects and their confidence scores
+  - Example of a log file (`output/logs/yolo.json`):
+    ```json
+    {
+      "device": "cuda",
+      "model": "yolo",
+      "model_identifier": "yolov8xseg",
+      "total_frames": 2657,
+      "total_inference_time_ms": 60498.5,
+      "frames": [
+        {
+          "frame_number": 0,
+          "inference_time_ms": 21.33,
+          "cpu_usage": 6.3,
+          "detections": [
+            {
+              "label": "person",
+              "box": [207, 109, 322, 405],
+              "score": 0.91
+            }
+			...
+          ]
+        }
+		...
+      ]
+    }
+    ```
+
+- **Final Video**:
+  - The final output videos generated after inference (optional step) are saved in the `data/videos/` folder.
+  - Each video contains the processed frames, combining object detection and segmentation outputs for visualization.
+
+## Limitations
+
+- **SAM2 Limitations**:
+  - **Segmentation Only**: SAM2 is a segmentation model and does not perform object detection natively. It is designed to work with object detection models, where the detections are passed to SAM2 for segmentation.
+  - **Human Feedback**: SAM2 is optimized for interactive use, where a user clicks on an object to track in a video. In our case, we worked around this limitation by hardcoding the position in the `sam2_detect_objects.py` file.
+  - **Short Testing**: Due to computational limitations and SAM2's complexity, we tested it on a small range of video frames.
+
+- **Detectron2 & SAM2 on Windows**: Detectron2 & SAM2 does not natively run on Windows and requires Windows Subsystem for Linux (WSL), which can lead to performance issues during inference. Native Linux is recommended for better results.
+
+- **EfficientDet and YOLO Performance**: While both models work well on Windows and Linux, Linux is recommended for optimal performance.
+
+## Additional Resources
+
+- **Frontend Repository**: 
+  - A companion frontend repository has been developed to visualize the results, compare models, and analyze metrics such as inference time and GPU usage. You can view the frontend here:
+    [Computer Vision Frontend](https://github.com/hector-oviedo/computer-vision-frontend)
+
+- **Videos Used**:
+  - The videos used for testing in this project are publicly available from Pexels:
+    - [Street Video by George Morina](https://www.pexels.com/video/crowded-street-under-the-rain-6059506/)
+    - [Top View Street Video by Kelly](https://www.pexels.com/video/top-view-footage-of-the-vehicles-crossing-the-roads-3696015/)
+    - [Snow Forest Video by Anthony](https://www.pexels.com/video/a-group-of-deer-at-winter-1508533/)
+    - [Interior House Video by Taryn Elliott](https://www.pexels.com/video/woman-in-green-romper-pouring-water-on-the-plant-3769966/)
+
+### Repo Folder Structure
 
 ```
 .
 ├── data/
-│   ├── videos/                  # Unedited videos (source videos)
+│   ├── videos/                  # Unedited videos, combined video, and output videos after scripts processing (source videos)
 │   ├── frames/                  # Processed video frames (to feed the models)
-│
-├── models/                      # Store the model weights (YOLOv8, EfficientDet, etc.)
 │
 ├── output/
 │   ├── frames/                  # Subfolder per model (stores inference frames)
@@ -73,55 +233,16 @@ Each file in this repository is carefully documented and contains detailed comme
 │   │
 │   ├── logs/                    # JSON files with frame-by-frame inference details (used for performance comparison)
 │   │   └── [model_name].json    # Logs for each model's inference process (e.g., inference time, memory usage)
-│   │
-│   └── videos/                  # Combined video and output videos after scripts processing
-│       └── [model_name].mp4     # Final output video generated from inference frames and the script `utils/video_generator_from_frames.py`
 │
-├── yolo.py                      # YOLOv8 model script for performing inference
+├── yolo.py                      # YOLO model script for performing inference
 ├── efficientdet.py              # EfficientDet model script for performing inference
+├── detectron2_script.py         # Detectron2 model script for performing inference
+├── sam2_script.py         		 # SAM2 model script for performing inference
+├── sam2_detect_objects.py       # SAM2 helper script for simulate object detection
+
 └── utils/                       # Utility scripts for various processes
     ├── config.py                # Central configuration for paths, colors, model settings, etc.
     ├── video_merger.py          # Script to merge multiple videos into one
     ├── video_frame_extractor.py # Extracts frames from a video for model input
     └── video_generator_from_frames.py # Combines inference frames into a video
 ```
-
-# Inference Workflow
-
-### Initial Setup - Check Configurations:
-Before starting the process, ensure that filenames and folder paths are compatible with your environment by checking and editing `utils/config.py`. The configuration file allows you to define the video names, folder paths, and other necessary settings.
-
-### Video Preparation - Merge or Use Single Video:
-If you plan to combine multiple videos into one for testing, use the script `utils/video_merger.py`. This script merges videos listed in `config.py` and saves the combined video in the designated folder.
-Skip this step if you intend to use a single video directly without merging, in this case, simply set up the `config.py` file to aim your video correctly.
-
-### Frame Extraction:
-After you have the desired video (merged or single), execute the script `utils/video_frame_extractor.py`. This script will take the video specified in `config.py`, extract its frames, and save them inside the `data/frames/` folder for model processing.
-
-### Model Inference:
-With the extracted frames in `data/frames/`, you can proceed with model inference by running the respective root scripts: `yolo.py` for YOLOv8 or `efficientdet.py` for EfficientDet.
-These scripts load the corresponding model and process the extracted frames. The inference results, are saved as frames in the folder output/frames/[model_name]/.
-In addition to the frames, detailed logs of the inference process (e.g., frame processing time, GPU/CPU usage) are saved as JSON files in `output/logs/`.
-
-### Video Generation (Optional):
-If you wish to compile the processed frames into a video, you can use the `utils/video_generator_from_frames.py` script.
-For each model, go into the 'video_generator_from_frames.py' script and specify the model name for which you want to generate a video. This will compile the frames in output/frames/[model_name] into a video and save it as output/videos/[model_name].mp4.
-
-By following these steps, you can seamlessly manage video preparation, frame extraction, model inference, and video generation in the specified folders, with logs to analyze the performance of each model.
-
-This structure allows for clear separation of raw video data, intermediate frames, model-specific outputs, and final results, making it easy to compare model performance and results at each stage.
-
-### PyTorch Installation
-
-To install PyTorch with the appropriate CUDA configuration for your environment, please follow the official PyTorch installation guide: [PyTorch Installation](https://pytorch.org/get-started/locally/).
-
-**Important Note:** The `requirements.txt` file provided in this repository does not include the PyTorch and CUDA-specific packages, as these should be installed according to your system's hardware and CUDA version. Please follow the instructions on the PyTorch website to ensure compatibility with your setup.
-
-For ease of setup, we recommend using a Python 3.8 environment created with `conda`. To create and activate a new environment, use the following commands:
-
-```
-conda create -n cv_project python=3.8
-conda activate cv_project
-```
-
-Once your environment is activated, follow the PyTorch installation instructions based on your operating system, Python version, and CUDA capabilities.

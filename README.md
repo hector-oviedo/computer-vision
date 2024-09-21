@@ -79,6 +79,7 @@ This project requires setting up two separate environments due to version compat
     ```bash
     cd ..
     ```
+For more details of SAM2: [segment-anything-2]((https://github.com/facebookresearch/segment-anything-2))
 
 ### Operating System Notes
 
@@ -246,3 +247,13 @@ The results of the model inference, including processed frames, logs, and videos
     ├── video_frame_extractor.py # Extracts frames from a video for model input
     └── video_generator_from_frames.py # Combines inference frames into a video
 ```
+
+## License
+
+This project is licensed under the MIT License, which permits free use, distribution, and modification of the software for both personal and commercial purposes. This project is intended for educational purposes, and contributions to improve or expand the project are welcomed.
+
+You are free to:
+- Use the software for personal or commercial projects.
+- Modify the software to suit your own needs.
+- Share and distribute the software as you see fit.
+- Contribute to this project through pull requests or by reporting issues.

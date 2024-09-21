@@ -1,4 +1,4 @@
-# Computer Vision Module for Object Detection and Segmentation
+# Computer Vision Module for IU University - Research Project
 
 ## Introduction
 This repository contains the tools for a research project focused on object detection and segmentation from video sequences. The primary goal is to test, implement, and compare multiple state-of-the-art (SoA) computer vision models for object recognition, specifically evaluating their performance in video-based tasks. This module is part of a broader project aimed at understanding and evaluating SoA models for video object recognition and segmentation in various scenarios.

@@ -79,7 +79,7 @@ This project requires setting up two separate environments due to version compat
     ```bash
     cd ..
     ```
-For more details of SAM2: [segment-anything-2]((https://github.com/facebookresearch/segment-anything-2))
+For more details of SAM2: [segment-anything-2](https://github.com/facebookresearch/segment-anything-2)
 
 ### Operating System Notes
 

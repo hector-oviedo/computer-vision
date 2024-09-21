@@ -66,6 +66,6 @@ class VideoGenerator:
 
 if __name__ == "__main__":
     # Example usage: Generate a video for the specified model
-    model_name = "detectron2"  # Replace with the actual model name
+    model_name = ""  # Replace with the actual model name
     video_generator = VideoGenerator(model_name)
     video_generator.generate_video()

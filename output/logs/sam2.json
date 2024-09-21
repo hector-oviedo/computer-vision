@@ -1,0 +1,665 @@
+{
+    "device": "cuda",
+    "model": "sam2",
+    "model_identifier": "SAM2",
+    "parameters": "224.4M",
+    "official_site": "https://github.com/facebookresearch/segment-anything-2",
+    "total_frames": 31,
+    "total_inference_time_ms": 237405.66,
+    "total_time_ms": 238585.22,
+    "total_gpu_memory_used": 2012.08,
+    "total_gpu_memory_reserved": 2673.87,
+    "frames": [
+        {
+            "frame_number": 2626,
+            "inference_time_ms": 7684.9,
+            "total_time_ms": 7684.9,
+            "cpu_usage": 8.2,
+            "cpu_ram_usage": 12.4,
+            "gpu_vram_usage": 1558.05,
+            "gpu_vram_reserved": 2483.03,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        345,
+                        302,
+                        410,
+                        481
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2627,
+            "inference_time_ms": 7584.96,
+            "total_time_ms": 7584.96,
+            "cpu_usage": 5.5,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1557.52,
+            "gpu_vram_reserved": 2560.62,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        342,
+                        302,
+                        407,
+                        484
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2628,
+            "inference_time_ms": 7588.47,
+            "total_time_ms": 7588.47,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.05,
+            "gpu_vram_reserved": 2673.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        340,
+                        302,
+                        403,
+                        484
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2629,
+            "inference_time_ms": 7595.57,
+            "total_time_ms": 7595.57,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.57,
+            "gpu_vram_reserved": 2522.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        337,
+                        301,
+                        401,
+                        486
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2630,
+            "inference_time_ms": 7614.04,
+            "total_time_ms": 7614.04,
+            "cpu_usage": 5.5,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1557.52,
+            "gpu_vram_reserved": 2560.62,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        335,
+                        299,
+                        397,
+                        486
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2631,
+            "inference_time_ms": 7628.01,
+            "total_time_ms": 7628.01,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.4,
+            "gpu_vram_usage": 1558.05,
+            "gpu_vram_reserved": 2673.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        331,
+                        298,
+                        392,
+                        487
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2632,
+            "inference_time_ms": 7632.16,
+            "total_time_ms": 7632.16,
+            "cpu_usage": 5.5,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.57,
+            "gpu_vram_reserved": 2522.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        328,
+                        297,
+                        390,
+                        487
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2633,
+            "inference_time_ms": 7637.72,
+            "total_time_ms": 7637.72,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.4,
+            "gpu_vram_usage": 1557.52,
+            "gpu_vram_reserved": 2560.62,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        324,
+                        296,
+                        385,
+                        488
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2634,
+            "inference_time_ms": 7640.6,
+            "total_time_ms": 7640.6,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.05,
+            "gpu_vram_reserved": 2673.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        319,
+                        295,
+                        376,
+                        491
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2635,
+            "inference_time_ms": 7649.22,
+            "total_time_ms": 7649.22,
+            "cpu_usage": 5.5,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.57,
+            "gpu_vram_reserved": 2522.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        314,
+                        293,
+                        370,
+                        491
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2636,
+            "inference_time_ms": 7654.49,
+            "total_time_ms": 7654.49,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1557.52,
+            "gpu_vram_reserved": 2560.62,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        308,
+                        293,
+                        361,
+                        494
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2637,
+            "inference_time_ms": 7653.67,
+            "total_time_ms": 7653.67,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.05,
+            "gpu_vram_reserved": 2673.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        303,
+                        293,
+                        354,
+                        496
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2638,
+            "inference_time_ms": 7660.53,
+            "total_time_ms": 7660.53,
+            "cpu_usage": 5.5,
+            "cpu_ram_usage": 12.4,
+            "gpu_vram_usage": 1558.57,
+            "gpu_vram_reserved": 2522.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        297,
+                        293,
+                        348,
+                        498
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2639,
+            "inference_time_ms": 7666.89,
+            "total_time_ms": 7666.89,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1557.52,
+            "gpu_vram_reserved": 2560.62,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        291,
+                        294,
+                        341,
+                        501
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2640,
+            "inference_time_ms": 7667.94,
+            "total_time_ms": 7667.94,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.05,
+            "gpu_vram_reserved": 2673.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        283,
+                        294,
+                        334,
+                        503
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2641,
+            "inference_time_ms": 7670.45,
+            "total_time_ms": 7670.45,
+            "cpu_usage": 5.5,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.57,
+            "gpu_vram_reserved": 2522.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        276,
+                        295,
+                        326,
+                        496
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2642,
+            "inference_time_ms": 7670.83,
+            "total_time_ms": 7670.83,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1557.52,
+            "gpu_vram_reserved": 2560.62,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        267,
+                        296,
+                        316,
+                        390
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2643,
+            "inference_time_ms": 7670.2,
+            "total_time_ms": 7670.2,
+            "cpu_usage": 5.5,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.05,
+            "gpu_vram_reserved": 2673.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        256,
+                        298,
+                        306,
+                        391
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2644,
+            "inference_time_ms": 7671.25,
+            "total_time_ms": 7671.25,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.57,
+            "gpu_vram_reserved": 2522.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        244,
+                        299,
+                        295,
+                        390
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2645,
+            "inference_time_ms": 7675.56,
+            "total_time_ms": 7675.56,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1557.52,
+            "gpu_vram_reserved": 2560.62,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        233,
+                        298,
+                        283,
+                        387
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2646,
+            "inference_time_ms": 7677.23,
+            "total_time_ms": 7677.23,
+            "cpu_usage": 5.5,
+            "cpu_ram_usage": 12.2,
+            "gpu_vram_usage": 1558.05,
+            "gpu_vram_reserved": 2673.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        220,
+                        297,
+                        269,
+                        379
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2647,
+            "inference_time_ms": 7681.63,
+            "total_time_ms": 7681.63,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.57,
+            "gpu_vram_reserved": 2522.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        204,
+                        296,
+                        254,
+                        379
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2648,
+            "inference_time_ms": 7682.08,
+            "total_time_ms": 7682.08,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.4,
+            "gpu_vram_usage": 1557.52,
+            "gpu_vram_reserved": 2560.62,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        189,
+                        293,
+                        239,
+                        365
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2649,
+            "inference_time_ms": 7680.11,
+            "total_time_ms": 7680.11,
+            "cpu_usage": 5.5,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.05,
+            "gpu_vram_reserved": 2673.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        173,
+                        291,
+                        224,
+                        365
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2650,
+            "inference_time_ms": 7677.54,
+            "total_time_ms": 7677.54,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.57,
+            "gpu_vram_reserved": 2522.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        158,
+                        289,
+                        209,
+                        363
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2651,
+            "inference_time_ms": 7682.4,
+            "total_time_ms": 7682.4,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1557.52,
+            "gpu_vram_reserved": 2560.62,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        141,
+                        286,
+                        193,
+                        362
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2652,
+            "inference_time_ms": 7681.54,
+            "total_time_ms": 7681.54,
+            "cpu_usage": 5.5,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.05,
+            "gpu_vram_reserved": 2673.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        124,
+                        284,
+                        176,
+                        361
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2653,
+            "inference_time_ms": 7680.89,
+            "total_time_ms": 7680.89,
+            "cpu_usage": 5.3,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.57,
+            "gpu_vram_reserved": 2522.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        107,
+                        282,
+                        161,
+                        360
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2654,
+            "inference_time_ms": 7682.79,
+            "total_time_ms": 7682.79,
+            "cpu_usage": 5.5,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1557.52,
+            "gpu_vram_reserved": 2560.62,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        93,
+                        283,
+                        149,
+                        364
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2655,
+            "inference_time_ms": 7681.98,
+            "total_time_ms": 7681.98,
+            "cpu_usage": 5.3,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.05,
+            "gpu_vram_reserved": 2673.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        80,
+                        284,
+                        137,
+                        367
+                    ],
+                    "score": 1.0
+                }
+            ]
+        },
+        {
+            "frame_number": 2656,
+            "inference_time_ms": 7680.02,
+            "total_time_ms": 7680.02,
+            "cpu_usage": 5.4,
+            "cpu_ram_usage": 12.3,
+            "gpu_vram_usage": 1558.57,
+            "gpu_vram_reserved": 2522.87,
+            "detections": [
+                {
+                    "label": "person",
+                    "box": [
+                        71,
+                        285,
+                        128,
+                        371
+                    ],
+                    "score": 1.0
+                }
+            ]
+        }
+    ]
+}

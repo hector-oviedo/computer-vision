@@ -154,7 +154,7 @@ The generated video will be saved in the folder specified in the `config.py` fil
 ### 4.1. Generating a Custom Range of Frames for Analysis
 After completing the model inference and obtaining all the processed frames and JSON logs, you might want to focus on a specific section of your video for detailed analysis or comparison. The range_video_generator.py script allows you to create a subset of your dataset, containing only the frames and corresponding data within a specified range. This is particularly useful for analyzing segments where interesting events occur or for comparing model performance on specific scenes.
 
-## Purpose:
+#### Purpose:
 
 Extract a subset of frames from the original dataset.
 Adjust the corresponding JSON logs to match the new frame range.
@@ -166,7 +166,7 @@ Features:
 - Consistent Naming: Renames frames to start from frame_0001.png in the new subset, ensuring consistency.
 - Project Structure Replication: Creates a new project folder with the same structure, containing only the specified frames and logs.
 
-## Steps to Generate a Custom Range of Frames:
+#### Steps to Generate a Custom Range of Frames:
 
 1. Configure the Script:
 
@@ -200,7 +200,7 @@ The folder will replicate the original project structure, but will only include:
 - The corresponding model inference frames for those frames.
 - The JSON log files adjusted to include only data for the specified frames.
 
-## Use the Subset for Analysis:
+#### Use the Subset for Analysis:
 
 You can now perform analysis within [Computer Vision Frontend](https://github.com/hector-oviedo/computer-vision-frontend), generate videos with the script  `video_generator_from_frames.py`, or run additional scripts using this subset.
 

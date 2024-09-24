@@ -151,6 +151,59 @@ After model inference, you can generate a video from the processed frames using 
 
 The generated video will be saved in the folder specified in the `config.py` file (`data/videos/` by default).
 
+### 4.1. Generating a Custom Range of Frames for Analysis
+After completing the model inference and obtaining all the processed frames and JSON logs, you might want to focus on a specific section of your video for detailed analysis or comparison. The range_video_generator.py script allows you to create a subset of your dataset, containing only the frames and corresponding data within a specified range. This is particularly useful for analyzing segments where interesting events occur or for comparing model performance on specific scenes.
+
+## Purpose:
+
+Extract a subset of frames from the original dataset.
+Adjust the corresponding JSON logs to match the new frame range.
+Maintain the project structure for seamless integration with other scripts.
+Features:
+
+- Selective Frame Copying: Copies frames from both the raw input and each model's output within a specified range.
+- JSON Log Adjustment: Modifies the total_frames and frame_number fields in the JSON logs to reflect the new subset.
+- Consistent Naming: Renames frames to start from frame_0001.png in the new subset, ensuring consistency.
+- Project Structure Replication: Creates a new project folder with the same structure, containing only the specified frames and logs.
+
+## Steps to Generate a Custom Range of Frames:
+
+1. Configure the Script:
+
+Open the `range_video_generator.py` script located in the utils/ directory.
+
+Set the following variables in the main function to your desired values:
+
+```python
+DEST_FOLDER_NAME = "cloned_project"  # Name of the destination folder
+INIT_FRAME = 5                       # Starting frame number (inclusive)
+ENDING_FRAME = 10                    # Ending frame number (inclusive)
+DEST_FOLDER_NAME: The name of the new project folder that will contain the subset.
+INIT_FRAME: The first frame number in your desired range.
+ENDING_FRAME: The last frame number in your desired range.
+```
+2. Run the Script:
+
+Ensure you have the appropriate Python environment activated.
+
+From the project's root directory (or within the utils/ directory), run:
+
+```bash
+python utils/range_video_generator.py
+```
+
+3. Verify the Output:
+
+A new folder named as per DEST_FOLDER_NAME will be created in your project's utils directory.
+The folder will replicate the original project structure, but will only include:
+- The frames within your specified range, renamed to start from frame_0001.png.
+- The corresponding model inference frames for those frames.
+- The JSON log files adjusted to include only data for the specified frames.
+
+## Use the Subset for Analysis:
+
+You can now perform analysis within [Computer Vision Frontend](https://github.com/hector-oviedo/computer-vision-frontend), generate videos with the script  `video_generator_from_frames.py`, or run additional scripts using this subset.
+
 ## Models JSON Output Structure
 
 The results of the model inference, including processed frames, logs, and videos, are stored in specific folders within the project. Below is an overview of how the output is organized:
@@ -246,6 +299,7 @@ The results of the model inference, including processed frames, logs, and videos
     ├── video_merger.py          # Script to merge multiple videos into one
     ├── video_frame_extractor.py # Extracts frames from a video for model input
     └── video_generator_from_frames.py # Combines inference frames into a video
+    └── range_video_generator.py # Generates a subset dataset of a specific range of frames
 ```
 
 ## License

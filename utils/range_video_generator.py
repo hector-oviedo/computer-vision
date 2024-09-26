@@ -11,7 +11,7 @@ def copy_and_rename_frames(src_dir, dest_dir, init, ending):
     """
     os.makedirs(dest_dir, exist_ok=True)
     frame_numbers = range(init, ending + 1)
-    for idx, n in enumerate(frame_numbers, start=1):
+    for idx, n in enumerate(frame_numbers, start=0):
         src_frame = os.path.join(src_dir, f"frame_{n:04d}.png")
         dest_frame = os.path.join(dest_dir, f"frame_{idx:04d}.png")
         if os.path.exists(src_frame):
@@ -22,7 +22,7 @@ def copy_and_rename_frames(src_dir, dest_dir, init, ending):
 def process_json_file(src_json_path, dest_json_path, init, ending):
     """
     Processes the JSON file to include only frames within the specified range
-    and adjusts the frame numbers accordingly.
+    and adjusts the frame numbers accordingly. Also recalculates summary statistics.
     """
     with open(src_json_path, 'r') as f:
         data = json.load(f)
@@ -30,28 +30,49 @@ def process_json_file(src_json_path, dest_json_path, init, ending):
     # Adjust total_frames
     total_frames = ending - init + 1
     data['total_frames'] = total_frames
-    
+
+    # Initialize accumulators for totals
+    total_inference_time_ms = 0.0
+    total_time_ms = 0.0
+    gpu_memory_used_list = []
+    gpu_memory_reserved_list = []
+
     # Adjust frames array
     new_frames = []
     for frame in data['frames']:
         frame_number = frame['frame_number']
         # Assuming frame_number starts from 0 in JSON
-        if init <= frame_number + 1 <= ending:
+        if init <= frame_number <= ending:
             # Adjust frame_number to start from 0
-            frame['frame_number'] = frame_number - init + 1
+            frame['frame_number'] = frame_number - init
             new_frames.append(frame)
+            
+            # Accumulate totals
+            total_inference_time_ms += frame.get('inference_time_ms', 0.0)
+            total_time_ms += frame.get('total_time_ms', 0.0)
+            gpu_memory_used_list.append(frame.get('gpu_vram_usage', 0.0))
+            gpu_memory_reserved_list.append(frame.get('gpu_vram_reserved', 0.0))
     
     data['frames'] = new_frames
-    
+
+    # Update total inference time and total time
+    data['total_inference_time_ms'] = round(total_inference_time_ms, 2)
+    data['total_time_ms'] = round(total_time_ms, 2)
+
+    # Update total GPU memory used and reserved
+    # Assuming we want the maximum values observed in the range
+    data['total_gpu_memory_used'] = max(gpu_memory_used_list) if gpu_memory_used_list else 0.0
+    data['total_gpu_memory_reserved'] = max(gpu_memory_reserved_list) if gpu_memory_reserved_list else 0.0
+
     # Save the modified JSON
     with open(dest_json_path, 'w') as f:
         json.dump(data, f, indent=4)
 
 def main():
     # Constants (Set your desired values here)
-    DEST_FOLDER_NAME = "video_4"            # Name of the destination folder
-    INIT_FRAME = 2087                       # Starting frame number (inclusive)
-    ENDING_FRAME = 2656                     # Ending frame number (inclusive)
+    DEST_FOLDER_NAME = "video_4"             # Name of the destination folder
+    INIT_FRAME = 2087                        # Starting frame number (inclusive)
+    ENDING_FRAME = 2656                      # Ending frame number (inclusive)
 
     # 1 video 0 to 820
     # 2 video 821 to 1342
